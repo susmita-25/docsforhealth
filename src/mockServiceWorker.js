@@ -1,13 +1,3 @@
-/* eslint-disable */
-/* tslint:disable */
-
-/**
- * Mock Service Worker.
- * @see https://github.com/mswjs/msw
- * - Please do NOT modify this file.
- * - Please do NOT serve this file on production.
- */
-
 const PACKAGE_VERSION = '2.7.3'
 const INTEGRITY_CHECKSUM = '00729d72e3b82faf54ca8b9621dbb96f'
 const IS_MOCKED_RESPONSE = Symbol('isMockedResponse')
@@ -128,7 +118,7 @@ async function handleRequest(event, requestId) {
   // Ensure MSW is active and ready to handle the message, otherwise
   // this message will pend indefinitely.
   if (client && activeClientIds.has(client.id)) {
-    ;(async function () {
+    ; (async function () {
       const responseClone = response.clone()
 
       sendToClient(
