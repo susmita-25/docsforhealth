@@ -1,12 +1,15 @@
-name: ESLint Check
+name: CI - Lint, Format, and Build
 
 on:
   pull_request:
     branches:
       - main
+  push:
+    branches:
+      - main
 
 jobs:
-  eslint:
+  lint-format-build:
     runs-on: ubuntu-latest
     steps:
       # Step 1: Checkout the repository
@@ -17,12 +20,29 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18'  # Use a version compatible with your project
+          node-version: '18'
 
-      # Step 3: Install dependencies using npm
+      # Step 3: Cache Node Modules
+      - name: Cache Node Modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: npm-cache-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            npm-cache-
+
+      # Step 4: Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      # Step 4: Run ESLint
+      # Step 5: Lint with ESLint
       - name: Run ESLint
         run: npm run lint
+
+      # Step 6: Check Code Formatting with Prettier
+      - name: Run Prettier
+        run: npm run format:check
+
+      # Step 7: Build the React Application
+      - name: Build React App
+        run: npm run build
