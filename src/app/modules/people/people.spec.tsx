@@ -26,7 +26,7 @@ describe("People", () => {
      * The following can be changed if MSW is not being used
      */
     server.use(
-      rest.get(getPeople.info.path, (_, res) => res.networkError("Failure"))
+      rest.get(getPeople.info.path, (_, res) => res.networkError("Failure")),
     );
     /****************************************************************************/
 
@@ -35,7 +35,7 @@ describe("People", () => {
     expect(
       screen.getByRole("heading", {
         name: "Oops! looks like something went wrong!",
-      })
+      }),
     ).toBeInTheDocument();
   });
 
@@ -67,21 +67,21 @@ describe("People", () => {
       expect(screen.getByRole("table")).toBeInTheDocument();
 
       expect(
-        within(screen.getAllByRole("row")[1]).getByText("Addie Duncan")
+        within(screen.getAllByRole("row")[1]).getByText("Addie Duncan"),
       ).toBeInTheDocument();
 
       expect(
-        screen.getByRole("columnheader", { name: "Name" })
+        screen.getByRole("columnheader", { name: "Name" }),
       ).toHaveAttribute("aria-sort", "ascending");
 
       await user.click(screen.getByRole("columnheader", { name: "Name" }));
 
       expect(
-        screen.getByRole("columnheader", { name: "Name" })
+        screen.getByRole("columnheader", { name: "Name" }),
       ).toHaveAttribute("aria-sort", "descending");
 
       expect(
-        within(screen.getAllByRole("row")[1]).getByText("Zelma Mcdaniel")
+        within(screen.getAllByRole("row")[1]).getByText("Zelma Mcdaniel"),
       ).toBeInTheDocument();
     });
 
@@ -97,11 +97,11 @@ describe("People", () => {
       expect(screen.getAllByRole("row").slice(1)).toHaveLength(2);
 
       expect(
-        within(screen.getAllByRole("row")[1]).getByText("Ball Higgins")
+        within(screen.getAllByRole("row")[1]).getByText("Ball Higgins"),
       ).toBeInTheDocument();
 
       expect(
-        within(screen.getAllByRole("row")[2]).getByText("Singleton Ball")
+        within(screen.getAllByRole("row")[2]).getByText("Singleton Ball"),
       ).toBeInTheDocument();
     });
   });

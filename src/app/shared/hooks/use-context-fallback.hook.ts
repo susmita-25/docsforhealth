@@ -5,9 +5,8 @@ export const useContextFallback = <T>(value: Context<T | undefined>) => {
 
   if (context === undefined) {
     throw new Error(
-      `Components that require this context must be children of ${
-        value.displayName ?? "the appropriate provider"
-      }.`
+      `Components that require this context must be children of 
+      ${value.displayName ?? "the appropriate provider"}.`,
     );
   }
 
