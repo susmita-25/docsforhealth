@@ -1,50 +1,58 @@
+import { useState, useEffect } from "react";
 import { Person } from "./model";
 import { usePeopleQuery } from "./query";
-
 import "./people.css";
+import { PersonForm } from "../peopleform/PersonForm.component";
+import { PeopleTable } from "../peopletable/PeopleTable.component";
 
 export function People() {
-  const { data: people, loading, error } = usePeopleQuery();
+  const { data: fetchedPeople, loading, error } = usePeopleQuery();
+  const [people, setPeople] = useState<Person[]>([]);
+  const [showForm, setShowForm] = useState(false);
 
-  const renderCells = ({ name, show, actor, movies, dob }: Person) => (
-    <>
-      <td>{name}</td>
-      <td>{show}</td>
-      <td>{actor}</td>
-      <td>{dob}</td>
-      <td
-        dangerouslySetInnerHTML={{
-          __html: movies.map(({ title }) => title).join(", "),
-        }}
-      ></td>
-    </>
-  );
+  useEffect(() => {
+    if (fetchedPeople) {
+      setPeople(fetchedPeople);
+    }
+  }, [fetchedPeople]);
 
-  if (loading) {
-    return <p>Fetching People...</p>;
-  }
+  const handleAddPerson = (newPerson: {
+    name: string;
+    show: string;
+    actor: string;
+    dob: string;
+    movies: string;
+  }) => {
+    const newPersonWithId: Person = {
+      ...newPerson,
+      id: Date.now().toString(),
+      updatedAt: new Date().toISOString(),
+      movies: newPerson.movies.split(",").map((title) => ({
+        title: title.trim(),
+        released: "",
+      })),
+    };
 
-  if (people === undefined || error) {
-    return <h2>Oops! looks like something went wrong!</h2>;
-  }
+    setPeople((prev) => [...prev, newPersonWithId]);
+    window?.alert("Person added successfully!");
+  };
+
+  if (loading) return <p>Fetching People...</p>;
+  if (error || !people) return <h2>Oops! Looks like something went wrong!</h2>;
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Show</th>
-          <th>Actor/Actress</th>
-          <th>Date of birth</th>
-          <th>Movies</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        {people.map((people, index) => (
-          <tr key={index}>{renderCells(people)}</tr>
-        ))}
-      </tbody>
-    </table>
+    <div>
+      {!showForm && (
+        <button onClick={() => setShowForm(true)}>Add Person</button>
+      )}
+      {showForm && (
+        <PersonForm
+          onAddPerson={handleAddPerson}
+          onCloseForm={() => setShowForm(false)}
+          onBackToList={() => setShowForm(false)}
+        />
+      )}
+      {!showForm && <PeopleTable people={people} />}
+    </div>
   );
 }

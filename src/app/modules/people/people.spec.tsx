@@ -1,9 +1,9 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, test } from "vitest";
-// import { rest } from "msw";
+import { rest } from "msw";
 
-import { http } from "msw";
+// import { http } from "msw";
 
 import { server } from "../../../api-mocks/server";
 import { getPeople } from "../../../api-mocks/handlers/people.handler";
@@ -28,8 +28,8 @@ describe("People", () => {
      * The following can be changed if MSW is not being used
      */
     server.use(
-      // rest.get(getPeople.info.path, (_, res) => res.networkError("Failure")),
-      http.get(getPeople.info.path, () => new Response(null, { status: 500 })),
+      rest.get(getPeople.info.path, (_, res) => res.networkError("Failure")),
+      // http.get(getPeople.info.path, () => new Response(null, { status: 500 })),
     );
     /****************************************************************************/
 
