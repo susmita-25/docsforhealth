@@ -29,7 +29,9 @@ export const PeopleTable: React.FC<PeopleTableProps> = ({ people }) => {
       </thead>
       <tbody>
         {people.map((person, index) => (
-          <tr key={index}>{renderCells(person)}</tr>
+          <tr key={index} role={"row"}>
+            {renderCells(person)}
+          </tr>
         ))}
       </tbody>
     </table>

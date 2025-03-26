@@ -1,10 +1,10 @@
 interface Movie {
   title: string;
-  released: string;
+  released?: string;
 }
 
 export interface Person {
-  id: string;
+  id?: string;
   name: string;
   show: string;
   actor: string;
